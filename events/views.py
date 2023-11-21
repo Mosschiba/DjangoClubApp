@@ -99,3 +99,13 @@ def update_event(request, event_id):
         return redirect('list-events')
     else:
         return render(request, 'events/update_event.html', {'form': form, 'event':event})
+    
+def delete_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    event.delete()
+    return redirect('list-events')
+
+def delete_venue(request, venue_id):
+    event = Venue.objects.get(pk=venue_id)
+    event.delete()
+    return redirect('list-venues')
