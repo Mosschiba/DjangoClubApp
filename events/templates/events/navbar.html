@@ -22,6 +22,15 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'add-event' %}">Add Event</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'venue_text' %}">Venue TextFile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'venue_csv' %}">Venue CSVFile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'venue_pdf' %}">Venue PDFile</a>
+          </li>
          
         </ul>
         <form class="d-flex" role="search" action="{% url 'search-venue' %}" method="post">
