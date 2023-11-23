@@ -7,7 +7,7 @@
 <h1>Venues...</h1>
 <br>
 <table class="table table-hover table-bordered table-striped">
-    {% for venue in list_venue %}
+    {% for venue in venues %}
     <tr>
         <td>
             <a href="{% url 'show-venue' venue.id %}" style="text-decoration: none;color:black; cursor: pointer;">
@@ -25,8 +25,32 @@
     </tr>
     {% endfor %}
 </table>
-
-     
+<br><br>
+<hr>
+<!-- {{venues}} <br>
+Has Previous: {{venues.has_previous}} <br>
+Has Next: {{venues.has_next}} <br>
+the Current page: {{venues.number}} <br>
+Number of pages : {{venues.paginator.num_pages}}
+<br>
+<hr> -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if venues.has_previous %}
+        <li class="page-item"></li><a class="page-link" href="?page=1">&laquo; First</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{venues.previous_page_number}}"> Previous</a></li>
+        {% endif %}
+        {% for num in page_num %}
+        <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+        
+        {% endfor %}
+        {% if venues.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{venues.next_page_number}}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{venues.paginator.num_pages}}">Last page &raquo;</a></li>
+        {% endif %}
+    </ul>
+  </nav>
+<br>
 
 
 </center>
