@@ -5,6 +5,7 @@
 
 
 <h1>Add Event</h1>
+{% if user.is_authenticated %}
 <br><br>
 {% if submitted %}
  <h1>You have Successfuly add a New Event</h1>
@@ -16,6 +17,10 @@
 
     <input type="submit" value="Add" class="btn btn-secondary btn-sm">
 </form>
+{% endif %}
+{% else %}
+<h1>Please login to add an Event</h1>
+<a class="nav-link" href="{% url 'login' %}">Login</a>
 {% endif %}
 <br><br><br>
 

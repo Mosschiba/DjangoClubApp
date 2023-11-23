@@ -14,6 +14,7 @@
                 {{ venue }} <br>
             </a>
         </td>
+        {% if user.is_authenticated %}
         <td align="right">
            <a href="{% url 'update-venue' venue.id %}" class="btn btn-light btn-sm btn-outline-primary">
             Update
@@ -22,6 +23,7 @@
             Delete
            </a> 
         </td>
+        {% endif %}
     </tr>
     {% endfor %}
 </table>
@@ -37,7 +39,7 @@ Number of pages : {{venues.paginator.num_pages}}
 <nav aria-label="Page navigation example">
     <ul class="pagination">
         {% if venues.has_previous %}
-        <li class="page-item"></li><a class="page-link" href="?page=1">&laquo; First</a></li>
+        <li class="page-item"></li><a class="page-link" href="?page=1">First Page</a></li>
         <li class="page-item"><a class="page-link" href="?page={{venues.previous_page_number}}"> Previous</a></li>
         {% endif %}
         {% for num in page_num %}
@@ -46,7 +48,7 @@ Number of pages : {{venues.paginator.num_pages}}
         {% endfor %}
         {% if venues.has_next %}
         <li class="page-item"><a class="page-link" href="?page={{venues.next_page_number}}">Next</a></li>
-        <li class="page-item"><a class="page-link" href="?page={{venues.paginator.num_pages}}">Last page &raquo;</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{venues.paginator.num_pages}}">Last page</a></li>
         {% endif %}
     </ul>
   </nav>

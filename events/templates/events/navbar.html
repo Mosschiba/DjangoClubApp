@@ -6,32 +6,55 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'home' '2023' 'March' %}">March</a>
+            <a class="nav-link" href="{% url 'home' '2023' 'March' %}">Calneder</a>
+          </li>
+          <!-- events dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Events
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'list-events' %}">Events</a></li>
+              <li><a class="dropdown-item" href="{% url 'add-event' %}">Add Event</a></li>  
+            </ul>
+          </li>
+          <!-- venue dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Venues
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'list-venues' %}">Venues</a></li>
+              <li><a class="dropdown-item" href="{% url 'add-venue' %}">Add Venue</a></li>
+              
+            
+            </ul>
+          </li>
+          <!-- Downloads -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Downloads
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'venue_text' %}">Download Venues Text</a></li>
+              <li><a class="dropdown-item" href="{% url 'venue_csv' %}">Download Venues CSV</a></li>
+              <li><a class="dropdown-item" href="{% url 'venue_pdf' %}">Download Venues PDF</a></li>
+            </ul>
+          </li>
+
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'list-events' %}">Events</a>
+            <a class="nav-link" href="{% url 'register_user' %}">Register</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'add-venue' %}">Add Venue</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'list-venues' %}">Venues</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'add-event' %}">Add Event</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'venue_text' %}">Venue TextFile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'venue_csv' %}">Venue CSVFile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'venue_pdf' %}">Venue PDFile</a>
-          </li>
-         
+         {%endif%}
         </ul>
         <form class="d-flex" role="search" action="{% url 'search-venue' %}" method="post">
           {% csrf_token %}
@@ -41,4 +64,4 @@
       </div>
     </div>
   </nav>
-          
+ 

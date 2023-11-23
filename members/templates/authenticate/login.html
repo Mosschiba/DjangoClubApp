@@ -1,0 +1,37 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<h1>Login</h1>
+<br>
+<form method="post" action="">
+    {% csrf_token %}
+    <div class="mb-3">
+        <input type="text" class="form-control" name="username" placeholder="Username" aria-describedby="emailHelp">
+    </div>
+    <div class="mb-3">
+        <input type="password" class="form-control" name="password" placeholder="Password">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+      
+  {% endblock content %}
+
+
+      
+      
+    
+
+
+    
+        
+
+
+
+    
+
+
+
+
+
+
