@@ -2,9 +2,8 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-
+{% if user == event.manager %}
     <br>
-    
     <h1>Update Event...</h1>
 
     <form action="" method="post">
@@ -14,6 +13,9 @@
         <br>
         <input type="submit" value="Update Event" class="btn btn-secondary btn-sm">
     </form>
+    {% else %}
+    <h2>You can Not make changes to this event </h2>
+    {% endif %}
     {% else %}
     <h1>Please login to add an Event</h1>
     <a class="nav-link" href="{% url 'login' %}">Login</a>
