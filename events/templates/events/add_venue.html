@@ -2,11 +2,9 @@
 
 {% block content %}
 
-
-
-<h1>Add Venue...</h1>
-<br><br>
 {% if user.is_authenticated %}
+<h1>Add Venue...</h1>
+<br><br>ID: {{ user.id }}
 {% if submitted %}
  <h1>You have Successfuly add a Venue</h1>
 {% else %}

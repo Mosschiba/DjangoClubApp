@@ -30,7 +30,7 @@
       </ul>
     </div>
     {% if user.is_authenticated %}
-    {% if user == event.manager %}
+    {% if user == event.manager or user.is_staff %}
     <div class="card-footer text-body-secondary ">
       <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary btn-sm fw-semibold">Update</a>
       <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm fw-semibold">Delete</a>

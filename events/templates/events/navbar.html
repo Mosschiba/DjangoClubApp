@@ -56,8 +56,14 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'register_user' %}">Register</a>
           </li>
-         {%endif%}
+          {%endif%}
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">{{ user }}</a>
+          </li>
+          {% endif %}
         </ul>
+        
         <form class="d-flex" role="search" action="{% url 'search-venue' %}" method="post">
           {% csrf_token %}
           <input class="form-control me-2 bg-light text-dark" type="search" name="searched" placeholder="Search Venue" aria-label="Search">

@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-{% if user == event.manager %}
+{% if user == event.manager or user.is_staff %}
     <br>
     <h1>Update Event...</h1>
 

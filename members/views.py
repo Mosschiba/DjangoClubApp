@@ -29,19 +29,21 @@ def register_user(request):
     if request.method == "POST":
         form = RegisterUserForm(request.POST)
         if form.is_valid():
-            form.save()
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
-            if User.objects.filter(username=username).exists() or User.objects.filter(password=password).exists():
+            email = form.cleaned_data['email']
+            if User.objects.filter(username=username).exists() or User.objects.filter(email=email.lower()).exists():
                 messages.error(request, 'Username or email already exists. Please choose a different one.')
                 return render(request, 'authenticate/register_user.html', {'form': form})
-            user = authenticate(username=username, password=password)   
-            login(request, user)
-            messages.success(request,'Registation succesfull!')
-            return redirect('home')
+            else:
+                form.save()
+                user = authenticate(username=username, password=password)   
+                login(request, user)
+                messages.success(request,'Registation succesfull!')
+                return redirect('home')
         else:
             messages.error(request,'Please check the information again..!')
             return render(request, 'authenticate/register_user.html', {'form':form})
     else:
-        form = RegisterUserForm
+        form = RegisterUserForm()
         return render(request, 'authenticate/register_user.html', {'form':form})
