@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 import csv
 
-# pdf things to import 
+# pdf things to import
 from django.http import FileResponse
 import io
 from reportlab.pdfgen import canvas
@@ -21,9 +21,11 @@ from reportlab.lib.pagesizes import letter
 from django.core.paginator import Paginator
 
 # Generate PDF file
+
+
 def venue_pdf(request):
     # create Buffer
-    buf= io.BytesIO()
+    buf = io.BytesIO()
     # create a canvas
     c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
     # create text object
@@ -45,7 +47,7 @@ def venue_pdf(request):
     # loop throught the lines
     for line in lines:
         textob.textLine(line)
-    
+
     # finich the reportlab thing
     c.drawText(textob)
     c.showPage()
@@ -55,7 +57,6 @@ def venue_pdf(request):
     # return the something here is will be response
     return FileResponse(buf, as_attachment=True, filename='venue.pdf')
 
-    
 
 # Generate CSV pile (EXCEL)
 def venue_csv(request):
@@ -68,13 +69,14 @@ def venue_csv(request):
     venues = Venue.objects.all()
 
     # add culomn heading to the csv file
-    writer.writerow(['Venue Name', 'Address', 'Zip Code', 'Phone', 'Website', 'Email'])
-   
+    writer.writerow(['Venue Name', 'Address', 'Zip Code',
+                    'Phone', 'Website', 'Email'])
+
     for venue in venues:
-        writer.writerow([venue.name, venue.address, venue.zip_code, venue.phone, venue.web, venue.email_address])
+        writer.writerow([venue.name, venue.address, venue.zip_code,
+                        venue.phone, venue.web, venue.email_address])
 
     return response
-    
 
 
 # Generate text file dynamicly
@@ -85,7 +87,8 @@ def venue_text(request):
     venues = Venue.objects.all()
     lines = []
     for venue in venues:
-        lines.append(f'{venue.name}\n{venue.address}\n{venue.zip_code}\n{venue.phone}\n{venue.web}\n{venue.email_address}\n\n\n\n\n')
+        lines.append(
+            f'{venue.name}\n{venue.address}\n{venue.zip_code}\n{venue.phone}\n{venue.web}\n{venue.email_address}\n\n\n\n\n')
 
     response.writelines(lines)
     return response
@@ -127,7 +130,7 @@ def add_venue(request):
         if form.is_valid():
             # form.save()
             venue = form.save(commit=False)
-            venue.owner = request.user.id #loggrd in user
+            venue.owner = request.user.id  # loggrd in user
             venue.save()
             return HttpResponseRedirect('/add_venue?submitted=True')
     else:
@@ -142,17 +145,18 @@ def list_venues(request):
     list_venue = Venue.objects.all()
 
     # set paginations
-    p = Paginator(Venue.objects.all().order_by('name'), 1)     # the second argunment(2) is for how many by page
+    # the second argunment(2) is for how many by page
+    p = Paginator(Venue.objects.all().order_by('name'), 3)
     page = request.GET.get('page')
     venues = p.get_page(page)
     page_num = 'n' * venues.paginator.num_pages
-    return render(request, 'events/venues.html', {'list_venue': list_venue, 'venues': venues,'page_num':page_num})
+    return render(request, 'events/venues.html', {'list_venue': list_venue, 'venues': venues, 'page_num': page_num})
 
 
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
-    venue_owner= User.objects.get(pk=venue.owner)
-    return render(request, 'events/show_venue.html', {'venue': venue})
+    venue_owner = User.objects.get(pk=venue.owner)
+    return render(request, 'events/show_venue.html', {'venue': venue, 'venue_owner': venue_owner})
 
 
 def search_venue(request):
@@ -192,14 +196,14 @@ def add_event(request):
         if request.user.is_superuser:
             form = EventFormAdmin
         else:
-            form= EventForm            
+            form = EventForm
         if 'submitted' in request.GET:
             submitted = True
     return render(request, 'events/add_event.html', {'form': form, 'submitted': submitted})
-            
+
 
 def update_event(request, event_id):
-    event = Event.objects.get(pk= event_id)
+    event = Event.objects.get(pk=event_id)
     if request.user.is_superuser:
         form = EventFormAdmin(request.POST or None, instance=event)
     else:
@@ -208,20 +212,33 @@ def update_event(request, event_id):
         form.save()
         return redirect('list-events')
     else:
-        return render(request, 'events/update_event.html', {'form': form, 'event':event})
-    
+        return render(request, 'events/update_event.html', {'form': form, 'event': event})
+
+
 def delete_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     if request.user == event.manager:
         event.delete()
         messages.success(request, 'You have succesfully deleted the event')
         return redirect('list-events')
-    else: 
-        messages.error(request, 'You are Not the event manager You can Not delete the event')
+    else:
+        messages.error(
+            request, 'You are Not the event manager You can Not delete the event')
         return redirect('list-events')
-        
+
 
 def delete_venue(request, venue_id):
     event = Venue.objects.get(pk=venue_id)
     event.delete()
     return redirect('list-venues')
+
+
+def my_events(request):
+    if request.user.is_authenticated:
+        me = request.user.id
+        events = Event.objects.filter(attendees=me)
+        return render(request, 'events/my_events.html', {'events': events})
+    else:
+        messages.error(
+            request, 'You are Not the event manager You can view the event')
+        return redirect('home')
